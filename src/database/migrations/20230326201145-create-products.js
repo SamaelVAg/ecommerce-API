@@ -24,7 +24,6 @@ module.exports = {
       availableQty: {
         type: Sequelize.INTEGER,
         defaultValue: 0,
-        field: 'available_qty'
       },
       stock: {
         type: Sequelize.BOOLEAN,
@@ -37,7 +36,6 @@ module.exports = {
           model: 'users',
           key: 'id',
         },
-        field: 'user_id',
       },
       productImg: {
         type: Sequelize.STRING,

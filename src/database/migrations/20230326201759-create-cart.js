@@ -16,7 +16,6 @@ module.exports = {
           model: 'users',
           key: 'id'
         },
-        field: 'user_id',
       },
       totalPrice: {
         type: Sequelize.FLOAT,
