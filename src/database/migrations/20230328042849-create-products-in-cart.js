@@ -35,7 +35,7 @@ module.exports = {
       },
       status: {
         type: Sequelize.STRING,
-        defaultValue: 'available',
+        defaultValue: 'In cart',
       },
       createdAt: {
         allowNull: false,

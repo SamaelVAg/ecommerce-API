@@ -2,6 +2,7 @@
 const {
   Model
 } = require('sequelize');
+require('dotenv').config();
 const bcrypt = require('bcrypt');
 
 module.exports = (sequelize, DataTypes) => {
@@ -28,7 +29,8 @@ module.exports = (sequelize, DataTypes) => {
     hooks: {
       beforeCreate: async (user) =>{
         try {
-          const salt = await bcrypt.genSalt(10);
+          const saltRounds = parseInt(process.env.BC_SALTROUNDS);
+          const salt = await bcrypt.genSalt(saltRounds);
           const passwordHash = await bcrypt.hash(user.password, salt);
           user.password = passwordHash;
         } catch (error) {

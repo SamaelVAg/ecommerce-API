@@ -16,7 +16,7 @@ module.exports = {
           model: 'orders',
           key: 'id',
         },
-        field: 'order_id',
+        field: 'orderId',
       },
       productId: {
         type: Sequelize.INTEGER,
@@ -25,7 +25,7 @@ module.exports = {
           model: 'products',
           key: 'id',
         },
-        field: 'product_id',
+        field: 'productId',
       },
       quantity: {
         type: Sequelize.INTEGER,
