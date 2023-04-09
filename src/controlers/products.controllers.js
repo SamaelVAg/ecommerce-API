@@ -14,8 +14,8 @@ const createProduct = async (req, res, next) => {
         const { id } = req.user;
         let data = req.body;
         data.userId = id;
-        const productCreated = await ProductsServices.create(data);
-        res.status(201).json(productCreated);
+        await ProductsServices.create(data);
+        res.status(201).send();
     } catch (error) {
         next(error);
     };

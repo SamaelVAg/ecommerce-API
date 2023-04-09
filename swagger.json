@@ -1,0 +1,848 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Ecommerce API",
+        "description": "An API to handle an ecommerce",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/login":{
+            "post":{
+                "tags": ["log in"],
+                "summary": "Log in to the e-commerce",
+                "description": "This endpoint allow the user to log in to the e-commerce and return an apiAuth to perform actions into de store",
+                "requestBody":{
+                    "required": true,
+                    "content":{
+                        "application/json":{
+                            "schema": {"$ref": "#/components/schemas/logIn"}
+                        }
+                    }
+                },
+                "responses":{
+                    "200":{
+                        "description":"ok",
+                        "content":{
+                            "application/json":{
+                                "schema":{"$ref":"#/components/schemas/auth"}
+                            }
+                        }
+                    },
+                    "400":{
+                        "description":"bad request",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "message":{
+                                            "type":"string",
+                                            "example":"user not found"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409":{
+                        "description":"conflict",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "name":{
+                                            "type":"string",
+                                            "example":"validation error"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"Database connection error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security":{
+                    "apiAuth":[]
+                }
+            }
+        },
+        "/api/v1/users": {
+            "post": {
+                "tags": ["users"],
+                "summary": "Create new user",
+                "description": "This endpoint allows you to create a new user account",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {"$ref": "#/components/schemas/signUp"}
+                        }
+                    }
+                },
+                "responses":{
+                    "201":{
+                        "description":"created"
+                    },
+                    "409":{
+                        "description":"conflict",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "name":{
+                                            "type":"string",
+                                            "example":"validation error"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"Database connection error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security":{
+                    "apiAuth":[]
+                }
+            },
+            "put": {
+                "tags": ["users"],
+                "summary": "Update user's username and avatar",
+                "description": "This endpoint allows you to update an user username an profile photo (avatar)",
+                "requestBody":{
+                    "required": true,
+                    "content":{
+                        "application/json":{
+                            "schema":{"$ref": "#/components/schemas/updateUser"}
+                        }
+                    }
+                },
+                "responses":{
+                    "204":{
+                        "description":"no content"
+                    },
+                    "401":{
+                        "description":"unauthorized",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "error":{
+                                            "type":"string",
+                                            "example":"no token provided"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"unauthorized"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409":{
+                        "description":"conflict",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "name":{
+                                            "type":"string",
+                                            "example":"validation error"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"Database connection error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/products":{
+            "get":{
+                "tags": ["products"],
+                "summary":"Get available products",
+                "description": "This endpoint brings all the products with stock greater than 0",
+                "responses":{
+                    "200":{
+                        "description":"ok",
+                        "content":{
+                            "application/json":{
+                                "schema":{"$ref":"#/components/schemas/products"}
+                            }
+                        }
+                    },
+                    "409":{
+                        "description":"conflict",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "name":{
+                                            "type":"string",
+                                            "example":"validation error"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"Database connection error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security":{
+                    "apiAuth":[]
+                }
+            },
+            "post":{
+                "tags": ["products"],
+                "summary": "Creates a new product",
+                "description": "This endpoint crates a new prroduct in the e-commerce",
+                "requestBody":{
+                    "required":true,
+                    "content":{
+                        "application/json":{
+                            "schema":{"$ref":"#/components/schemas/newProduct"}
+                        }
+                    }
+                },
+                "responses":{
+                    "201":{
+                        "description":"created"
+                    },
+                    "401":{
+                        "description":"unauthorized",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "error":{
+                                            "type":"string",
+                                            "example":"no token provided"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"unauthorized"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409":{
+                        "description":"conflict",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "name":{
+                                            "type":"string",
+                                            "example":"validation error"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"Database connection error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/products/{id}":{
+            "put":{
+                "tags": ["products"],
+                "summary": "Updates product description",
+                "description": "This endpoint allows to edit the description of one product",
+                "parameters":[
+                    {
+                        "name":"id",
+                        "in":"path",
+                        "required":true,
+                        "description":"The product's id to been updated"
+                    }
+                ],
+                "requestBody":{
+                    "required":true,
+                    "content":{
+                        "application/json":{
+                            "schema":{
+                                "type":"object",
+                                "properties":{
+                                    "description":{
+                                        "type":"string",
+                                        "example":"This is an updated description of Example product"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses":{
+                    "204":{
+                        "description":"no content"
+                    },
+                    "401":{
+                        "description":"unauthorized",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "error":{
+                                            "type":"string",
+                                            "example":"no token provided"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"unauthorized"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409":{
+                        "description":"conflict",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "name":{
+                                            "type":"string",
+                                            "example":"validation error"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"Database connection error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/cart":{
+            "get":{
+                "tags":["cart"],
+                "summary":"Get all products in user's cart",
+                "description":"This endpoint brings back all the products that are in the user's cart",
+                "responses":{
+                    "200":{
+                        "description":"ok",
+                        "content":{
+                            "application/json":{
+                                "schema":{"$ref":"#/components/schemas/cart"}
+                            }
+                        }
+                    },
+                    "401":{
+                        "description":"unauthorized",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "error":{
+                                            "type":"string",
+                                            "example":"no token provided"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"unauthorized"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409":{
+                        "description":"conflict",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "name":{
+                                            "type":"string",
+                                            "example":"validation error"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"Database connection error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post":{
+                "tags":["cart"],
+                "summary":"Add to cart",
+                "description":"This endpoint add product to the user's cart",
+                "requestBody":{
+                    "required":true,
+                    "content":{
+                        "application/json":{
+                            "schema":{"$ref":"#/components/schemas/addProduct"}
+                        }
+                    }
+                },
+                "responses":{
+                    "200":{
+                        "description":"ok"
+                    },
+                    "401":{
+                        "description":"unauthorized",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "error":{
+                                            "type":"string",
+                                            "example":"no token provided"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"unauthorized"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409":{
+                        "description":"conflict",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "name":{
+                                            "type":"string",
+                                            "example":"validation error"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"Database connection error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete":{
+                "tags":["cart"],
+                "summary":"Purchase the cart",
+                "description":"This endpoint purchases all the products in the cart and remove them from the cart",
+                "responses":{
+                    "200":{
+                        "description":"ok"
+                    },
+                    "401":{
+                        "description":"unauthorized",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "error":{
+                                            "type":"string",
+                                            "example":"no token provided"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"unauthorized"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409":{
+                        "description":"conflict",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "name":{
+                                            "type":"string",
+                                            "example":"validation error"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"Database connection error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/orders":{
+            "get":{
+                "tags":["orders"],
+                "summary":"Get all orders",
+                "description":"This endpoint bringss back all the user's orders",
+                "responses":{
+                    "200":{
+                        "description":"ok",
+                        "content":{
+                            "application/json":{
+                                "schema":{"$ref":"#/components/schemas/orders"}
+                            }
+                        }
+                    },
+                    "401":{
+                        "description":"unauthorized",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "error":{
+                                            "type":"string",
+                                            "example":"no token provided"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"unauthorized"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "409":{
+                        "description":"conflict",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "type":"object",
+                                    "properties":{
+                                        "name":{
+                                            "type":"string",
+                                            "example":"validation error"
+                                        },
+                                        "message":{
+                                            "type":"string",
+                                            "example":"Database connection error"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "signUp": {
+                "description": "Username and password must be at least 8 characters long, password must be a combination between upercase, lowercase and number characters",
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "example": "ExmpUser"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "exmpuser@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "ExmPass1"
+                    }
+                }
+            },
+            "updateUser":{
+                "description": "Must contain new username string or profile phto url",
+                "type": "object",
+                "properties":{
+                    "username":{
+                        "type":"string",
+                        "example": "NewUsername"
+                    },
+                    "avatar":{
+                        "type": "string",
+                        "example": "http://imagehost.com/imgRoute"
+                    }
+                }
+            },
+            "logIn":{
+                "description": "User must sent its email and password to verify credentials",
+                "type": "object",
+                "properties":{
+                    "email":{
+                        "type":"string",
+                        "example":"exmpuser@example.com"
+                    },
+                    "password":{
+                        "type":"string",
+                        "example":"ExmPass1"
+                    }
+                }
+            },
+            "newProduct":{
+                "description": "Is an object containing name, description, price, available quantity and images providen by the seller user",
+                "type":"object",
+                "properties":{
+                    "name":{
+                        "type":"string",
+                        "example":"Product example"
+                    },
+                    "description":{
+                        "type":"string",
+                        "example":"This is a description of Product example"
+                    },
+                    "price":{
+                        "type":"float",
+                        "example":100.00
+                    },
+                    "availableQty":{
+                        "type":"integer",
+                        "example":15
+                    },
+                    "productImg":{
+                        "type":"string",
+                        "example":"http://imagehost.com/imgRoute"
+                    }
+                }
+            },
+            "addProduct":{
+                "description":"Must contain product id and quantity to buy",
+                "type":"object",
+                "properties":{
+                    "productId":{
+                        "type":"integer",
+                        "example":1
+                    },
+                    "quantity":{
+                        "type":"integer",
+                        "example":2
+                    }
+                }
+            },
+            "auth":{
+                "type":"object",
+                "properties":{
+                    "id":{
+                        "type":"integer",
+                        "example":1
+                    },
+                    "username":{
+                        "type":"string",
+                        "example":"ExmpUser"
+                    },
+                    "email":{
+                        "type":"string",
+                        "example":"exmpuser@example.com"
+                    },
+                    "token":{
+                        "type":"string"
+                    }
+                }
+            },
+            "products":{
+                "type":"array",
+                "items":{
+                    "type":"object",
+                    "properties":{
+                        "id":{
+                            "type":"integer",
+                            "example":1
+                        },
+                        "name":{
+                            "type":"string",
+                            "example":"Product example"
+                        },
+                        "description":{
+                            "type":"string",
+                            "example":"This is a description of Product example"
+                        },
+                        "price":{
+                            "type":"float",
+                            "example":100.00
+                        },
+                        "availableQty":{
+                            "type":"integer",
+                            "example":15
+                        },
+                        "stock":{
+                            "type":"boolean",
+                            "example":true
+                        },
+                        "userId":{
+                            "type":"integer",
+                            "example":1
+                        },
+                        "productImg":{
+                            "type":"string",
+                            "example":"http://imagehost.com/imgRoute"
+                        },
+                        "user":{
+                            "type":"object",
+                            "properties":{
+                                "username":{
+                                    "type":"string",
+                                    "example":"ExmpUser"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "cart":{
+                "type":"object",
+                "properties":{
+                    "products":{
+                        "type":"array",
+                        "items":{
+                            "type":"object",
+                            "properties":{
+                                "quantity":{
+                                    "type":"integer",
+                                    "example":2
+                                },
+                                "product":{
+                                    "type":"object",
+                                    "properties":{
+                                        "id":{
+                                            "type":"integer",
+                                            "example":1
+                                        },
+                                        "name":{
+                                            "type":"string",
+                                            "example":"Product example"
+                                        },
+                                        "price":{
+                                            "type":"float",
+                                            "example":100.00
+                                        },
+                                        "productImg":{
+                                            "type":"string",
+                                            "example":"http://imagehost.com/imgRoute"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "total":{
+                        "type":"float",
+                        "example":200.00
+                    }
+                }
+            },
+            "orders":{
+                "type":"array",
+                "items":{
+                    "type":"object",
+                    "properties":{
+                        "id":{
+                            "type":"integer",
+                            "example":3
+                        },
+                        "totalPrice":{
+                            "type":"float",
+                            "example":200.00
+                        },
+                        "status":{
+                            "type":"string",
+                            "example":"purchased"
+                        },
+                        "createdAt":{
+                            "type":"string"
+                        },
+                        "updatedAt":{
+                            "type":"string"
+                        },
+                        "productsInOrders":{
+                            "type":"array",
+                            "items":{
+                                "type":"object",
+                                "properties":{
+                                    "id":{
+                                        "type":"integer",
+                                        "example":5
+                                    },
+                                    "quantity":{
+                                        "type":"integer",
+                                        "example":2
+                                    },
+                                    "price":{
+                                        "type":"float",
+                                        "example":100.00
+                                    },
+                                    "status":{
+                                        "type":"string",
+                                        "example":"purchased"
+                                    },
+                                    "product":{
+                                        "type":"object",
+                                        "properties":{
+                                            "id":{
+                                                "type":"integer",
+                                                "example":1
+                                            },
+                                            "name":{
+                                                "type":"string",
+                                                "example":"Product example"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        },
+        "securitySchemes":{
+            "apiAuth":{
+                "type":"apiKey",
+                "in":"header",
+                "name":"access-token"
+            }
+        }
+    },
+    "security":[
+        {
+            "apiAuth":[]
+        }
+    ]
+}

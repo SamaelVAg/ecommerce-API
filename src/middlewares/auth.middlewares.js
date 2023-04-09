@@ -7,8 +7,8 @@ const authenticate = (req, res, next) => {
     if(!token){
         return next({
             status: 401,
-            message: 'Unauthorized',
-            error: 'Missing token'
+            message: 'No token provided',
+            error: 'Unauthorized'
         });
     };
     try {
